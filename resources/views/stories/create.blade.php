@@ -6,18 +6,20 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    {{ $story->title }}
+                    Add Story
 
                     <a href=" {{ route('stories.index') }}" class="float-right">Back</a>
                 </div>
 
                 <div class="card-body">
-                    {{ $story->body}}
+                    <form action="{{ route('stories.store') }}" method="POST">
+                        @csrf
 
-                    <p class="font-weight-bold">
-                        Status: {{ $story->status == 1 ? 'Yes' : 'No'}}
-                        Type: {{ $story->type }}
-                    </p>
+                        @include('stories.form')
+
+                        <button class="btn btn-primary">Add</button>
+                    </form>
+
                 </div>
             </div>
         </div>

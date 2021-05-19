@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,12 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/stories', 'StoryController@index')->name('stories.index');
-Route::get('/stories/{story}', 'StoryController@show')->name('stories.show');
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/stories', 'StoryController@index')->name('stories.index');
+//Route::get('/stories/{story}', 'StoryController@show')->name('stories.show');
+//Route::resource('stories', StoryController::class)->name('stories');
+Route::get('/','Auth\LoginController@showLoginForm');
+Route::middleware(['auth'])->group(function(){
+    Route::resource('stories', 'StoryController');
+});

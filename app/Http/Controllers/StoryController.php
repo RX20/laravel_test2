@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Story;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoryRequest;
+use Illuminate\Support\Facades\Gate;
 
 class StoryController extends Controller
 {
@@ -29,7 +31,10 @@ class StoryController extends Controller
      */
     public function create()
     {
-        //
+        $story= new Story;
+        return view('stories.create',[
+            'story'=>$story
+        ]);
     }
 
     /**
@@ -38,9 +43,12 @@ class StoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoryRequest $request)
     {
-        //
+ 
+        auth()->user()->stories()->create($request->validated());
+        
+        return redirect()->route('stories.index')->with('status', 'Story Created Successfully!');
     }
 
     /**
@@ -64,7 +72,10 @@ class StoryController extends Controller
      */
     public function edit(Story $story)
     {
-        //
+        Gate::authorize('edit-story',$story);
+        return view('stories.edit', [
+            'story' => $story
+        ]);
     }
 
     /**
@@ -74,9 +85,13 @@ class StoryController extends Controller
      * @param  \App\Models\Story  $story
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Story $story)
+    public function update(StoryRequest $request, Story $story)
     {
-        //
+      
+
+        $story->update( $request->validated() );
+
+        return redirect()->route('stories.index')->with('status', 'Story Updated Successfully!');
     }
 
     /**
@@ -87,6 +102,7 @@ class StoryController extends Controller
      */
     public function destroy(Story $story)
     {
-        //
+        $story->delete();
+        return redirect()->route('stories.index')->with('status', 'Story Deleted Successfully!');
     }
 }

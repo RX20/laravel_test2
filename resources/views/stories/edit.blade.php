@@ -6,18 +6,21 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    {{ $story->title }}
+                    Edit Story
 
                     <a href=" {{ route('stories.index') }}" class="float-right">Back</a>
                 </div>
 
                 <div class="card-body">
-                    {{ $story->body}}
+                    <form action="{{ route('stories.update', [$story]) }}" method="POST">
+                        @csrf
+                        @method('PUT')
 
-                    <p class="font-weight-bold">
-                        Status: {{ $story->status == 1 ? 'Yes' : 'No'}}
-                        Type: {{ $story->type }}
-                    </p>
+                        @include('stories.form')
+
+                        <button class="btn btn-primary">Save</button>
+                    </form>
+
                 </div>
             </div>
         </div>
